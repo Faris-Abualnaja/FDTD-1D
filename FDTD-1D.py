@@ -1,0 +1,1 @@
+print("This is a 1D simulation for a wave propagating in air towards a surface.")
