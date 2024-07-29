@@ -80,7 +80,11 @@ with writer.saving(fig, 'FDTD-1D.gif', 100):
 
         # Plotting
         if n % 10 == 0:
+            # Plot the fields
             plt.plot(Ex)
+            # Plot parameters
             plt.ylim([-1, 1])
+            # Capture the plot for creating gif
             writer.grab_frame()
+            # Clear figure for next capture
             plt.cla()
