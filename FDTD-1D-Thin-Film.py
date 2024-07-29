@@ -25,10 +25,10 @@ eps             = np.ones(j_max)*eps_0  # Relative permitivitty throughout domai
 eps[250:350]    = 10*eps_0              # Relative permitivitty through thin film
 
 # Material profile and drawing
-# If statement, if eps > 0 then make assign
+# If statement, if eps > eps_0 then assign
 # a value of 1 to the material_profile, else
-# the material_profile is 0.
-material_profile = eps > eps_0
+# the material_profile is 0. Shift down to fit in plot
+material_profile = (eps > eps_0)*2 - 1
 
 # Spatial and temporal step sizes
 lambda_min  = 400e-9        # Minimum wavelength
@@ -95,7 +95,7 @@ with writer.saving(fig, 'FDTD-1D-Thin-Film.gif', 100):
             # Plot material
             plt.plot(material_profile, 'r')
             # Plot parameters
-            plt.ylim([0, 2])
+            plt.ylim([-2, 2])
             # Capture the plot for creating gif
             writer.grab_frame()
             # Clear figure for next capture
