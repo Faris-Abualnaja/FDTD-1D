@@ -59,9 +59,8 @@ with writer.saving(fig, 'FDTD-1D.gif', 100):
         # Update magnetic field boundaries
         Hz[j_max - 1] = Hz_prev[j_max - 2]
         # Update magnetic field
-        for j in range(j_max-1):
-            Hz[j] = Hz_prev[j] + (dt/(mu_0*dy))*(Ex[j+1] - Ex[j])
-            Hz_prev[j] = Hz[j]
+        Hz[:j_max-1] = Hz_prev[:j_max-1] + (dt/(mu_0*dy))*(Ex[1:j_max] - Ex[:j_max-1])
+        Hz_prev = Hz
         
         # Magnetic field source
         Hz[j_source-1] -= (1/imp_0)*Source_Function(n)
@@ -70,9 +69,8 @@ with writer.saving(fig, 'FDTD-1D.gif', 100):
         # Update electric field boundaries
         Ex[0] = Ex_prev[1]
         # Update electric field
-        for j in range(1, j_max):
-            Ex[j] = Ex_prev[j] + (dt/(eps*dy))*(Hz[j] - Hz[j-1])
-            Ex_prev[j] = Ex[j]
+        Ex[1:] = Ex_prev[1:] + (dt/(eps*dy))*(Hz[1:] - Hz[:j_max-1])
+        Ex_prev = Ex
 
         # Electric field source
         Ex[j_source] += Source_Function(n+1)
