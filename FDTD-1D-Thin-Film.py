@@ -48,13 +48,14 @@ def Source_Function(t):
     # Source parameters
     # t is an integer, the time step
     lambda_0    = 550e-9                    # Centre wavelength of Gaussian pulse
-    tau         = 30                        # Width (300 time steps) of Gaussian pulse
+    tau         = 10                        # Width (300 time steps) of Gaussian pulse
     t_0         = tau*3                     # Delay (offset of Gaussian pulse)
     w_0         = (2*np.pi*c_0)/lambda_0    # Centre frequency of Gaussian pulse
 
     # Function returns a modulated Gaussian
     # dt is used to ensure units are in seconds
-    return np.exp(-(t-t_0)**2/tau**2)*np.sin(w_0*t*dt)
+    # return np.exp(-(t-t_0)**2/tau**2)*np.sin(w_0*t*dt)
+    return np.exp(-(t-t_0)**2/tau**2)*0.5
 
 # Setting up figure
 fig = plt.figure()
@@ -64,19 +65,8 @@ metadata    = dict(title='FDTD-1D Thin Film Simulation', artist='Faris-Abualnaja
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'FDTD-1D-Thin-Film.gif', 100):
+with writer.saving(fig, 'FDTD-1D-Thin-Film-Pulse-1.gif', 100):
     for n in range(n_max):
-        # Update magnetic field boundaries
-        Hz[j_max - 1] = Hz_prev[j_max - 2]
-        # Update magnetic field
-        for j in range(j_max-1):
-            Hz[j] = Hz_prev[j] + (dt/(mu_0*dy))*(Ex[j+1] - Ex[j])
-            Hz_prev[j] = Hz[j]
-        
-        # Magnetic field source
-        Hz[j_source-1] -= (1/imp_0)*Source_Function(n)
-        Hz_prev[j_source-1] = Hz[j_source-1]
-
         # Update electric field boundaries
         Ex[0] = Ex_prev[1]
         # Update electric field
@@ -88,12 +78,23 @@ with writer.saving(fig, 'FDTD-1D-Thin-Film.gif', 100):
         Ex[j_source] += Source_Function(n+1)
         Ex_prev[j_source] = Ex[j_source]
 
+        # Update magnetic field boundaries
+        Hz[j_max - 1] = Hz_prev[j_max - 2]
+        # Update magnetic field
+        for j in range(j_max-1):
+            Hz[j] = Hz_prev[j] + (dt/(mu_0*dy))*(Ex[j+1] - Ex[j])
+            Hz_prev[j] = Hz[j]
+        
+        # Magnetic field source
+        Hz[j_source-1] -= (1/imp_0)*Source_Function(n)
+        Hz_prev[j_source-1] = Hz[j_source-1]
+
         # Plotting
         if n % 10 == 0:
             # Plot the E-field
-            plt.plot(Ex)
+            plt.plot(Ex, 'b')
             # Plot material
-            plt.plot(material_profile, 'r')
+            plt.plot(material_profile, 'k')
             # Plot parameters
             plt.ylim([-2, 2])
             # Capture the plot for creating gif
