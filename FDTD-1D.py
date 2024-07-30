@@ -57,16 +57,7 @@ writer      = PillowWriter(fps=15, metadata=metadata)
 # Simulation and animation creation loop
 with writer.saving(fig, 'FDTD-1D-Pulse-1.gif', 100):
     for n in range(n_max):
-        # Update magnetic field boundaries
-        Hz[j_max - 1] = Hz_prev[j_max - 2]
-        # Update magnetic field
-        Hz[:j_max-1] = Hz_prev[:j_max-1] + (dt/(mu_0*dy))*(Ex[1:j_max] - Ex[:j_max-1])
-        Hz_prev = Hz
         
-        # Magnetic field source
-        Hz[j_source-1] -= (1/imp_0)*Source_Function(n)
-        Hz_prev[j_source-1] = Hz[j_source-1]
-
         # Update electric field boundaries
         Ex[0] = Ex_prev[1]
         # Update electric field
@@ -76,6 +67,16 @@ with writer.saving(fig, 'FDTD-1D-Pulse-1.gif', 100):
         # Electric field source
         Ex[j_source] += Source_Function(n+1)
         Ex_prev[j_source] = Ex[j_source]
+
+        # Update magnetic field boundaries
+        Hz[j_max - 1] = Hz_prev[j_max - 2]
+        # Update magnetic field
+        Hz[:j_max-1] = Hz_prev[:j_max-1] + (dt/(mu_0*dy))*(Ex[1:j_max] - Ex[:j_max-1])
+        Hz_prev = Hz
+        
+        # Magnetic field source
+        Hz[j_source-1] -= (1/imp_0)*Source_Function(n)
+        Hz_prev[j_source-1] = Hz[j_source-1]
 
         # Plotting
         if n % 10 == 0:
