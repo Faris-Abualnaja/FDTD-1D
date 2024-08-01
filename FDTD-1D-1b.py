@@ -10,94 +10,82 @@ from matplotlib.animation import PillowWriter
 # Define Constants
 
 # Size of simulation domain in space and time
-j_max       = 500               # 500 cells
-n_max       = 2000              # 2000 time stamps
-j_source    = 10                # Location of source in space (10th cell)
+k_max       = 200               # 500 cells
+n_max       = 400              # 2000 time stamps
+k_source    = int(k_max/2)                # Location of source in space (10th cell)
 
 # Constants
 mu_0    = 1.25663706e-6         # Permeability of free space (magnetic constant)
 eps_0   = 8.85418782e-12        # Permitivitty of free space (electric constant)
 c_0     = 1/np.sqrt(mu_0*eps_0) # Speed of light in a vacuum (2.99792458e8)
-imp_0   = np.sqrt(mu_0/eps_0)   # Impedance of free space
-
-# Thin Film constants
-eps             = np.ones(j_max)*eps_0  # Relative permitivitty throughout domain
-eps[250:350]    = 10*eps_0              # Relative permitivitty through thin film
-
-# Material profile and drawing
-# If statement, if eps > eps_0 then assign
-# a value of 1 to the material_profile, else
-# the material_profile is 0. Shift down to fit in plot
-material_profile = (eps > eps_0)*2 - 1
-
-# Spatial and temporal step sizes
-lambda_min  = 400e-9        # Minimum wavelength
-dy          = lambda_min/20 # Step size in space (y-direction)
-dt          = dy/c_0        # Step size in time
 
 # Define our electric and magnetic fields (wave propagates in y-direction)
-Ex = np.zeros(j_max) # Electric field propagating in the x-direction
-Hz = np.zeros(j_max) # Magnetic field propagating in the z-direction
-
-# Define previous E- and H-fields
-Ex_prev = np.zeros(j_max)
-Hz_prev = np.zeros(j_max)
+Ex = np.zeros(k_max) # Electric field propagating in the x-direction
+Hz = np.zeros(k_max) # Magnetic field propagating in the z-direction
 
 # Electric and magnetic field source
 def Source_Function(t):
-    # Source parameters
-    # t is an integer, the time step
-    lambda_0    = 550e-9                    # Centre wavelength of Gaussian pulse
-    tau         = 10                        # Width (300 time steps) of Gaussian pulse
-    t_0         = tau*3                     # Delay (offset of Gaussian pulse)
-    w_0         = (2*np.pi*c_0)/lambda_0    # Centre frequency of Gaussian pulse
+    # Source parameters: t is an integer, the time step
+    spread  = 12       # Width (300 time steps) of Gaussian pulse
+    t_0     = spread*3 # Delay (offset of Gaussian pulse)
 
-    # Function returns a modulated Gaussian
-    # dt is used to ensure units are in seconds
-    # return np.exp(-(t-t_0)**2/tau**2)*np.sin(w_0*t*dt)
-    return np.exp(-(t-t_0)**2/tau**2)*0.5
+    # Function returns a Gaussian pulse
+    return np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
 
 # Setting up figure
-fig = plt.figure()
+fig = plt.figure(figsize=(8,3.5))
 
 # Setting up animation
-metadata    = dict(title='FDTD-1D Thin Film Simulation', artist='Faris-Abualnaja')
+metadata    = dict(title='FDTD-1D Simulation', artist='Faris-Abualnaja')
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'FDTD-1D-Thin-Film-Pulse-1.gif', 100):
+with writer.saving(fig, 'FDTD-1D-1b.gif', 100):
+    # Time loop
     for n in range(n_max):
-        # Update electric field boundaries
-        Ex[0] = Ex_prev[1]
+
         # Update electric field
-        for j in range(1, j_max):
-            Ex[j] = Ex_prev[j] + (dt/(eps[j]*dy))*(Hz[j] - Hz[j-1])
-            Ex_prev[j] = Ex[j]
+        for k in range(1, k_max):
+            Ex[k] = Ex[k] + 0.5*(Hz[k-1] - Hz[k])
 
         # Electric field source
-        Ex[j_source] += Source_Function(n+1)
-        Ex_prev[j_source] = Ex[j_source]
+        pulse           = Source_Function(n)
+        Ex[k_source]    = pulse
 
-        # Update magnetic field boundaries
-        Hz[j_max - 1] = Hz_prev[j_max - 2]
         # Update magnetic field
-        for j in range(j_max-1):
-            Hz[j] = Hz_prev[j] + (dt/(mu_0*dy))*(Ex[j+1] - Ex[j])
-            Hz_prev[j] = Hz[j]
-        
-        # Magnetic field source
-        Hz[j_source-1] -= (1/imp_0)*Source_Function(n)
-        Hz_prev[j_source-1] = Hz[j_source-1]
+        for k in range(k_max-1):
+            Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
 
         # Plotting
         if n % 10 == 0:
+            plt.rcParams['font.size'] = 12
             # Plot the E-field
-            plt.plot(Ex, 'b')
-            # Plot material
-            plt.plot(material_profile, 'k')
+            plt.subplot(211)
+            plt.plot(Ex, color='b', linewidth=1)
             # Plot parameters
-            plt.ylim([-2, 2])
+            plt.ylabel('E$_x$', fontsize='14')
+            plt.xticks(np.arange(0, 201, step=20))
+            plt.xlim(0, 200)
+            plt.yticks(np.arange(-1, 1.2, step=1))
+            plt.ylim(-1.2, 1.2)
+            plt.text(100, 0.5, 'T = {}'.format(n),
+            horizontalalignment='center')
+            
+            
+            # Plot H-field
+            plt.subplot(212)
+            plt.plot(Hz, color='r', linewidth=1)
+            #Plot parameters
+            plt.ylabel('H$_y$', fontsize='14')
+            plt.xlabel('FDTD cells')
+            plt.xticks(np.arange(0, 201, step=20))
+            plt.xlim(0, 200)
+            plt.yticks(np.arange(-1, 1.2, step=1))
+            plt.ylim(-1.2, 1.2)
+            plt.subplots_adjust(bottom=0.2, hspace=0.45)
+            
             # Capture the plot for creating gif
             writer.grab_frame()
             # Clear figure for next capture
-            plt.cla()
+            #plt.cla()
+            plt.clf()
