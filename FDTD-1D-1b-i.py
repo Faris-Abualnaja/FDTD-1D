@@ -1,4 +1,4 @@
-# FDTD-1D with Thin Film simulation
+# FDTD-1D with single E-field source
 # Faris Abualnaja
 # 2024-07-26
 
@@ -10,9 +10,9 @@ from matplotlib.animation import PillowWriter
 # Define Constants
 
 # Size of simulation domain in space and time
-k_max       = 200               # 500 cells
-n_max       = 400              # 2000 time stamps
-k_source    = int(k_max/2)                # Location of source in space (10th cell)
+k_max       = 200              # 200 cells
+n_max       = 400              # 800 time stamps
+k_source    = int(k_max/2)     # Location of source in space (half way)
 
 # Constants
 mu_0    = 1.25663706e-6         # Permeability of free space (magnetic constant)
