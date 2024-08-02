@@ -11,7 +11,7 @@ from matplotlib.animation import PillowWriter
 
 # Size of simulation domain in space and time
 k_max       = 200              # 200 cells
-n_max       = 400              # 800 time stamps
+n_max       = 400              # 400 time stamps
 k_source    = int(k_max/2)     # Location of source in space (half way)
 
 # Constants
