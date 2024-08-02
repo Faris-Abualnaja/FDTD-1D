@@ -52,7 +52,7 @@ with writer.saving(fig, 'FDTD-1D-1b-iii.gif', 100):
         for k in range(k_max-1):
             Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
 
-        # Electric field source
+        # Magnetic field source
         pulse           = Source_Function(n)
         Hz[k_source]    = pulse
 
