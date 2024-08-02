@@ -1,6 +1,6 @@
 # FDTD-1D with single E-field source
-# Gaussian pulse (exp(-0.5 * ((t_0 - t) / spread) ** 2)) modified
-# 0.5 -> 1.1
+# Understanding stability
+# Changing factor in update equations from 0.5 -> 1.0
 # Faris Abualnaja
 # 2024-07-26
 
@@ -32,7 +32,7 @@ def Source_Function(t):
     t_0     = spread*3 # Delay (offset of Gaussian pulse)
 
     # Function returns a Gaussian pulse
-    return np.exp(-1.1 * ((t_0 - t) / spread) ** 2)
+    return np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
 
 # Setting up figure
 fig = plt.figure(figsize=(8,3.5))
@@ -48,7 +48,7 @@ with writer.saving(fig, 'FDTD-1D-1c-ii.gif', 100):
 
         # Update electric field
         for k in range(1, k_max):
-            Ex[k] = Ex[k] + 0.5*(Hz[k-1] - Hz[k])
+            Ex[k] = Ex[k] + 1.1*(Hz[k-1] - Hz[k])
 
         # Electric field source
         pulse           = Source_Function(n)
@@ -56,7 +56,7 @@ with writer.saving(fig, 'FDTD-1D-1c-ii.gif', 100):
 
         # Update magnetic field
         for k in range(k_max-1):
-            Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
+            Hz[k] = Hz[k] + 1.1*(Ex[k] - Ex[k+1])
 
         # Plotting
         if n % 10 == 0: # Frame rate
