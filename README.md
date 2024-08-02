@@ -9,3 +9,4 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1b-ii: Two E-field sources instead of one.
     - FDTD-1D-1b-iii: Single H-field source instead of E-field source.
     - FDTD-1D-1b-iv: Two H-field sources.
+- FDTD-1D-1c: Continuing from FDTD-1D-1b, however, here we are varying the source parameters (source = exp(-0.5 * ((t_0 - t) / spread) ** 2))
