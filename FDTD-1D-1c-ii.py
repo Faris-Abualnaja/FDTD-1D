@@ -59,7 +59,7 @@ with writer.saving(fig, 'FDTD-1D-1c-ii.gif', 100):
             Hz[k] = Hz[k] + 1.1*(Ex[k] - Ex[k+1])
 
         # Plotting
-        if n % 10 == 0: # Frame rate
+        if n % 5 == 0: # Frame rate
             plt.rcParams['font.size'] = 12
             # Plot the E-field
             plt.subplot(211)
