@@ -87,5 +87,4 @@ with writer.saving(fig, 'FDTD-1D-1b.gif', 100):
             # Capture the plot for creating gif
             writer.grab_frame()
             # Clear figure for next capture
-            #plt.cla()
             plt.clf()
