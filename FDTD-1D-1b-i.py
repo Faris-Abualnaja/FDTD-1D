@@ -40,7 +40,7 @@ metadata    = dict(title='FDTD-1D Simulation', artist='Faris-Abualnaja')
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'FDTD-1D-1b.gif', 100):
+with writer.saving(fig, 'FDTD-1D-1b-i.gif', 100):
     # Time loop
     for n in range(n_max):
 
@@ -57,7 +57,7 @@ with writer.saving(fig, 'FDTD-1D-1b.gif', 100):
             Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
 
         # Plotting
-        if n % 10 == 0:
+        if n % 5 == 0: # Frame rate
             plt.rcParams['font.size'] = 12
             # Plot the E-field
             plt.subplot(211)
@@ -70,7 +70,6 @@ with writer.saving(fig, 'FDTD-1D-1b.gif', 100):
             plt.ylim(-1.2, 1.2)
             plt.text(100, 0.5, 'T = {}'.format(n),
             horizontalalignment='center')
-            
             
             # Plot H-field
             plt.subplot(212)
