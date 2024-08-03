@@ -1,5 +1,8 @@
 # FDTD-1D with single E-field source
-# Adding boundary condition - Only plotting E-field
+# Adding a material with a different dielectric constant
+# That is including a relative permittivity (eps_domain)
+# The reflection at the source is due to the source being
+# a 'hard' source
 # Faris Abualnaja
 # 2024-07-26
 
@@ -11,14 +14,29 @@ from matplotlib.animation import PillowWriter
 # Define Constants
 
 # Size of simulation domain in space and time
-k_max       = 200              # 200 cells
-n_max       = 400              # 400 time stamps
-k_source    = int(k_max/2)     # Location of source in space (half way)
+k_max       = 200 # 200 cells
+n_max       = 800 # 400 time stamps
+k_source    = 10   # Location of source in space (at the 1st cell)
 
 # Constants
 mu_0    = 1.25663706e-6         # Permeability of free space (magnetic constant)
 eps_0   = 8.85418782e-12        # Permitivitty of free space (electric constant)
 c_0     = 1/np.sqrt(mu_0*eps_0) # Speed of light in a vacuum (2.99792458e8)
+eps_r   = 4                     # Relative permittivity
+
+# Dielectric constant accross material spatial-domain
+eps_material    = np.zeros(int(k_max/2))
+eps_material[:] = eps_r
+
+# Factor in governing equations as a constant
+c = np.ones(k_max)
+c[:int(k_max/2)] = 0.5
+c[int(k_max/2):] = 0.5/eps_material
+
+# Material across domain: air + some material
+material = np.zeros(k_max)
+material[:int(k_max/2)] = 0
+material[int(k_max/2):] = 1
 
 # Define our electric and magnetic fields (wave propagates in y-direction)
 Ex = np.zeros(k_max) # Electric field propagating in the x-direction
@@ -50,7 +68,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-i.gif', 100):
     for n in range(n_max):
         # Update electric field
         for k in range(1, k_max):
-            Ex[k] = Ex[k] + 0.5*(Hz[k-1] - Hz[k])
+            Ex[k] = Ex[k] + c[k]*(Hz[k-1] - Hz[k])
 
         # Electric field source
         pulse           = Source_Function(n)
@@ -59,6 +77,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-i.gif', 100):
         # Boundary conditions
         Lower_Boundary[n] = Ex[1]
         Upper_Boundary[n] = Ex[k_max-2]
+
         if n > 1:
             Ex[0]       = Lower_Boundary[n-2]
             Ex[k_max-1] = Upper_Boundary[n-2]
@@ -68,21 +87,23 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-i.gif', 100):
             Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
 
         # Plotting
-        if n % 5 == 0: # Frame rate
+        if n % 10 == 0: # Frame rate
             plt.rcParams['font.size'] = 12
             # Plot the E-field
             plt.plot(Ex, color='b', linewidth=1.5)
+            # Plot material
+            plt.plot(material, color='k', linewidth=1.5, linestyle='--')
             # Plot parameters
             plt.xlabel('FDTD cells', fontsize='14')
             plt.ylabel('E$_x$', fontsize='14')
             plt.xticks(np.arange(0, 201, step=20))
             plt.xlim(0, 200)
-            plt.yticks(np.arange(-0.0, 1.2, step=0.5))
-            plt.ylim(-0.2, 1.2)
+            plt.yticks(np.arange(-0.5, 1.2, step=0.5))
+            plt.ylim(-0.7, 1.2)
             plt.text(100, 0.5, 'T = {}'.format(n),
             horizontalalignment='center')
             plt.tight_layout()
-            
+
             # Capture the plot for creating gif
             writer.grab_frame()
             # Clear figure for next capture
