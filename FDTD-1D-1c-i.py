@@ -1,7 +1,7 @@
 # FDTD-1D with single E-field source
-# Adding boundary condition
+# Adding boundary conditions
 # Faris Abualnaja
-# 2024-07-26
+# 2024-08-02
 
 # Imports
 import numpy as np
@@ -45,7 +45,7 @@ metadata    = dict(title='FDTD-1D Simulation', artist='Faris-Abualnaja')
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'FDTD-1D-1d-i.gif', 100):
+with writer.saving(fig, 'Gifs/FDTD-1D-1c-i.gif', 100):
     # Time loop
     for n in range(n_max):
         # Update electric field
