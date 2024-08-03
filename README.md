@@ -15,3 +15,4 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1c-iii: Changed factor from 0.5 -> 0.25
 - FDTD-1D-1d: Continuing from FDTD-1D-1c, we now look at boundary conditions and ensure they are absorbing. We also only concentrate on the E-field
     - FDTD-1D-1d-i: At the boundaries the wave propagate through. Introduce previous Ex and Hz variables to assign Ex[0], Ex[max], Hz[0], and Hz[max] values.
+    - FDTD-1D-1d-ii: Only displaying E-field and adjusting figure size.
