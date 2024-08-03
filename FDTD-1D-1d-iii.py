@@ -70,7 +70,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-iii.gif', 100):
         for k in range(1, k_max):
             Ex[k] = Ex[k] + c[k]*(Hz[k-1] - Hz[k])
 
-        # Electric field source
+        # Electric field soft-source
         pulse           = Source_Function(n)
         Ex[k_source]    = pulse + Ex[k_source]
 
