@@ -1,5 +1,5 @@
 # FDTD-1D with single E-field source
-# Adding boundary condition
+# Adding boundary condition - Only plotting E-field
 # Faris Abualnaja
 # 2024-07-26
 
@@ -38,7 +38,7 @@ def Source_Function(t):
     return np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
 
 # Setting up figure
-fig = plt.figure(figsize=(8,3.5))
+fig = plt.figure(figsize=(8,1.75))
 
 # Setting up animation
 metadata    = dict(title='FDTD-1D Simulation', artist='Faris-Abualnaja')
@@ -71,28 +71,17 @@ with writer.saving(fig, 'FDTD-1D-1d-i.gif', 100):
         if n % 5 == 0: # Frame rate
             plt.rcParams['font.size'] = 12
             # Plot the E-field
-            plt.subplot(211)
-            plt.plot(Ex, color='b', linewidth=1)
+            plt.plot(Ex, color='b', linewidth=1.5)
             # Plot parameters
+            plt.xlabel('FDTD cells', fontsize='14')
             plt.ylabel('E$_x$', fontsize='14')
             plt.xticks(np.arange(0, 201, step=20))
             plt.xlim(0, 200)
-            plt.yticks(np.arange(-1, 1.2, step=1))
-            plt.ylim(-1.2, 1.2)
+            plt.yticks(np.arange(-0.0, 1.2, step=0.5))
+            plt.ylim(-0.2, 1.2)
             plt.text(100, 0.5, 'T = {}'.format(n),
             horizontalalignment='center')
-            
-            # Plot H-field
-            plt.subplot(212)
-            plt.plot(Hz, color='r', linewidth=1)
-            #Plot parameters
-            plt.ylabel('H$_y$', fontsize='14')
-            plt.xlabel('FDTD cells')
-            plt.xticks(np.arange(0, 201, step=20))
-            plt.xlim(0, 200)
-            plt.yticks(np.arange(-1, 1.2, step=1))
-            plt.ylim(-1.2, 1.2)
-            plt.subplots_adjust(bottom=0.2, hspace=0.45)
+            plt.tight_layout()
             
             # Capture the plot for creating gif
             writer.grab_frame()
