@@ -1,6 +1,6 @@
 # FDTD-1D with single E-field source
 # Adding a material with a different dielectric constant
-# Changed frequency from 700 MHz -> 1.3GHz
+# Changed frequency from 700 MHz -> 1.6GHz
 # Faris Abualnaja
 # 2024-08-03
 
