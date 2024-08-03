@@ -21,4 +21,9 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1d-ii: Fixed the reflection at the end of the dielectric medium (far right side in figure).
     - FDTD-1D-1d-iii: Changed hard source to a soft source so the E-field does not reflect at the source.
 - FDTD-1D-1e: Simulating with different sources
-    - FDTD-1D-1e-i: Changed source to a our sine wave
+    - FDTD-1D-1e-i: Changed source to a sine wave
+    - FDTD-1D-1e-ii: Removed absorbing boundary at dielectric end
+    - FDTD-1D-1e-iii: Increased frequency to 1GHz
+    - FDTD-1D-1e-iv: Increaed frequency to 1.3GHz
+    - FDTD-1D-1e-v: Increased frequency to 1.6GHz
+    - FDTD-1D-1e-vi: Changed source to a wave packet (modulated gaussian)
