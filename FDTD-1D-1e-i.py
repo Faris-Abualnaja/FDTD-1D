@@ -1,8 +1,6 @@
 # FDTD-1D with single E-field source
 # Adding a material with a different dielectric constant
-# That is including a relative permittivity (eps_domain)
-# The reflection at the source is due to the source being
-# a 'hard' source
+# Changed the source to apure sine wave
 # Faris Abualnaja
 # 2024-08-03
 
@@ -53,7 +51,7 @@ def Source_Function(t):
     t_0     = spread*3 # Delay (offset of Gaussian pulse)
 
     # Function returns a Gaussian pulse
-    return np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
+    return 1*np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
 
 # Setting up figure
 fig = plt.figure(figsize=(8,1.75))
@@ -63,16 +61,16 @@ metadata    = dict(title='FDTD-1D Simulation', artist='Faris-Abualnaja')
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'Gifs/FDTD-1D-1d-i.gif', 100):
+with writer.saving(fig, 'Gifs/FDTD-1D-1d-iii.gif', 100):
     # Time loop
     for n in range(n_max):
         # Update electric field
         for k in range(1, k_max):
             Ex[k] = Ex[k] + c[k]*(Hz[k-1] - Hz[k])
 
-        # Electric field source
+        # Electric field soft-source
         pulse           = Source_Function(n)
-        Ex[k_source]    = pulse
+        Ex[k_source]    = pulse + Ex[k_source]
 
         # Boundary conditions
         Lower_Boundary[n] = Ex[1]
@@ -80,7 +78,8 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-i.gif', 100):
 
         if n > 1:
             Ex[0]       = Lower_Boundary[n-2]
-            Ex[k_max-1] = Upper_Boundary[n-2]
+        if n > 3:
+            Ex[k_max-1] = Upper_Boundary[n-4]
         
         # Update magnetic field
         for k in range(k_max-1):
@@ -98,7 +97,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-i.gif', 100):
             plt.ylabel('E$_x$', fontsize='14')
             plt.xticks(np.arange(0, 201, step=20))
             plt.xlim(0, 200)
-            plt.yticks(np.arange(-0.5, 1.2, step=0.5))
+            plt.yticks(np.arange(-0.7, 1.2, step=0.5))
             plt.ylim(-0.7, 1.2)
             plt.text(100, 0.5, 'T = {}'.format(n),
             horizontalalignment='center')

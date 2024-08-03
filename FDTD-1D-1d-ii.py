@@ -3,7 +3,7 @@
 # That is including a relative permittivity (eps_domain)
 # Adjusted reflection at the end of the domain in the dielectric medium
 # Faris Abualnaja
-# 2024-07-26
+# 2024-08-03
 
 # Imports
 import numpy as np
