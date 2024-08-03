@@ -53,7 +53,7 @@ def Source_Function(t):
     t_0     = spread*3 # Delay (offset of Gaussian pulse)
 
     # Function returns a Gaussian pulse
-    return np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
+    return 1*np.exp(-0.5 * ((t_0 - t) / spread) ** 2)
 
 # Setting up figure
 fig = plt.figure(figsize=(8,1.75))
@@ -99,7 +99,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1d-iii.gif', 100):
             plt.ylabel('E$_x$', fontsize='14')
             plt.xticks(np.arange(0, 201, step=20))
             plt.xlim(0, 200)
-            plt.yticks(np.arange(-0.5, 1.2, step=0.5))
+            plt.yticks(np.arange(-0.7, 1.2, step=0.5))
             plt.ylim(-0.7, 1.2)
             plt.text(100, 0.5, 'T = {}'.format(n),
             horizontalalignment='center')
