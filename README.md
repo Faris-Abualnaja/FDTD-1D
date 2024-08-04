@@ -34,3 +34,5 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1f-iii: Changed cell size to half the rule of thumb
     - FDTD-1D-1f-iv: Changed cell size to 10 times rule of thumb
     - FDTD-1D-1f-v: Changed cell size to 0.1 times rule of thumb
+- FDTD-1D-1g: Material is a lossy dielectric.
+    - FDTD-1D-1g-i: Creating a lossy dielectric medium
