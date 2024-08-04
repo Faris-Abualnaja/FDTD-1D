@@ -40,13 +40,13 @@ metadata    = dict(title='Gifs/FDTD-1D Simulation', artist='Faris-Abualnaja')
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'Gifs/FDTD-1D-1a-i.gif', 100):
+with writer.saving(fig, 'Gifs/FDTD-1D-1a-i-TEST.gif', 100):
     # Time loop
     for n in range(n_max):
 
         # Update electric field
         for k in range(1, k_max):
-            Ex[k] = Ex[k] + 0.5*(Hz[k-1] - Hz[k])
+            Ex[k] = Ex[k] + 0.5*(Hz[k] - Hz[k-1])
 
         # Electric field source
         pulse           = Source_Function(n)
@@ -54,7 +54,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1a-i.gif', 100):
 
         # Update magnetic field
         for k in range(k_max-1):
-            Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
+            Hz[k] = Hz[k] + 0.5*(Ex[k+1] - Ex[k])
 
         # Plotting
         if n % 5 == 0: # Frame rate
