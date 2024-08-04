@@ -32,13 +32,13 @@ dt          = dy/(2*c_0)                # Step size in time
 eps_material    = np.zeros(int(k_max/2))
 eps_material[:] = eps_r
 
-# Constant in update equation
+# Constants in update equation
 eaf = (dt*sigma)/(2*eps_r*eps_0)
-c = np.ones(k_max)
 ca = np.ones(k_max)
 ca[int(k_max/2):] = (1-eaf)/(1+eaf)
-c[:int(k_max/2)] = 0.5
-c[int(k_max/2):] = (1/(2*eps_r*(1+eaf)))
+cb = np.ones(k_max)
+cb[:int(k_max/2)] = 0.5
+cb[int(k_max/2):] = (1/(2*eps_r*(1+eaf)))
 
 # Material across domain: air + some material
 material = np.zeros(k_max)
@@ -75,7 +75,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1g-i.gif', 100):
     for n in range(n_max):
         # Update electric field
         for k in range(1, k_max):
-            Ex[k] = ca[k]*Ex[k] + c[k]*(Hz[k-1] - Hz[k])
+            Ex[k] = ca[k]*Ex[k] + cb[k]*(Hz[k] - Hz[k-1])
 
         # Electric field soft-source
         pulse           = Source_Function(n, freq)
@@ -91,7 +91,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1g-i.gif', 100):
         
         # Update magnetic field
         for k in range(k_max-1):
-            Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
+            Hz[k] = Hz[k] + 0.5*(Ex[k+1] - Ex[k])
 
         # Plotting
         if n % 5 == 0: # Frame rate
