@@ -28,7 +28,7 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1e-v: Increased frequency to 1.6GHz
     - FDTD-1D-1e-vi: Increased frequency to 1.9 GHz 
     - FDTD-1D-1e-vii: Changed source to a wave packet (modulated gaussian)
-- FDTD-1D-1f: Creating a cell size based on minimum wavelength and relative permittivity of dielectric medium.
+- FDTD-1D-1f: Creating a cell size based on minimum wavelength and relative permittivity of dielectric medium. Rule of thumb is minimum wavelength divided by ten. smaller values will give better resolution as the sampling size will be even finer, however, it comes at a cost, which is calculation time. If you make the sampling size even finer, you will need to increase the number of cells, i.e. k_max accordingly. For example, if my current k_max = 200 and I want to increase my resolution, that is reduce the size of $\Delta x$ byt 0.1, then I would multiply k_max by 10. This will show the same EM-wave interaction scaled appropriately.
     - FDTD-1D-1f-i: Sine wave with a frequency of 30 MHz and a relative permittivity of 20
     - FDTD-1D-1f-ii: Changed cell size to to twice the rule of thumb
     - FDTD-1D-1f-iii: Changed cell size to half the rule of thumb
