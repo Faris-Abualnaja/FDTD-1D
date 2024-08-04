@@ -1,7 +1,7 @@
 # FDTD-1D with single E-field source
 # Material with a dielectric constant = 20
 # Sine wave with frequency 3GHz
-# Cell size is 0.5 rule of thumb
+# Cell size is 0.5x rule of thumb
 # Faris Abualnaja
 # 2024-08-04
 
