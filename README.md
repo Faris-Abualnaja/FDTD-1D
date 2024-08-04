@@ -30,4 +30,7 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1e-vii: Changed source to a wave packet (modulated gaussian)
 - FDTD-1D-1f: Creating a cell size based on minimum wavelength and relative permittivity of dielectric medium.
     - FDTD-1D-1f-i: Sine wave with a frequency of 30 MHz and a relative permittivity of 20
-    - FDTD-1D-1f-ii: Understanding cell size -- changed cell size to an incorrect sampling size
+    - FDTD-1D-1f-ii: Changed cell size to to twice the rule of thumb
+    - FDTD-1D-1f-iii: Changed cell size to half the rule of thumb
+    - FDTD-1D-1f-iv: Changed cell size to 10 times rule of thumb
+    - FDTD-1D-1f-v: Changed cell size to 0.1 times rule of thumb
