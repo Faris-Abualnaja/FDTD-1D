@@ -11,9 +11,9 @@ from matplotlib.animation import PillowWriter
 # Define Constants
 
 # Size of simulation domain in space and time
-k_max    = 200  # 200 cells
-n_max    = 1600 # 1600 time stamps
-k_source = 5    # Location of source in space (at the 5th cell)
+k_max    = 200 # 200 cells
+n_max    = 800 # 800 time stamps
+k_source = 5   # Location of source in space (at the 5th cell)
 
 # Constants
 mu_0    = 1.25663706e-6         # Permeability of free space (magnetic constant)
@@ -25,7 +25,7 @@ sigma   = 0.04
 # Spatial and temporal step sizes
 freq        = 700e6
 lambda_min  = (c_0/np.sqrt(eps_r))/freq
-dy          = lambda_min/10             # Step size/cell size in space (y-direction)
+dy          = 0.01#lambda_min/10             # Step size/cell size in space (y-direction)
 dt          = dy/(2*c_0)                # Step size in time
 
 # Dielectric constant accross material spatial-domain
@@ -43,8 +43,8 @@ cb[int(k_max/2):] = (1/(2*eps_r*(1+eaf)))
 # Material across domain: air + some material
 material = np.zeros(k_max)
 material[:int(k_max/2)] = 0
-material[int(k_max/2):] = 1
-material = material*4 - 2
+material[int(k_max/2):] = 1.5
+#material = material*4 - 2
 
 # Define our electric and magnetic fields (wave propagates in y-direction)
 Ex = np.zeros(k_max) # Electric field propagating in the x-direction
@@ -63,7 +63,7 @@ def Source_Function(t, freq):
     return np.sin(w_0*t*dt)
 
 # Setting up figure
-fig = plt.figure(figsize=(8,3.5))
+fig = plt.figure(figsize=(8,1.75))
 
 # Setting up animation
 metadata    = dict(title='FDTD-1D Simulation', artist='Faris-Abualnaja')
@@ -105,9 +105,15 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1g-i.gif', 100):
             plt.ylabel('E$_x$', fontsize='14')
             plt.xticks(np.arange(0, 201, step=20))
             plt.xlim(0, 200)
-            plt.yticks(np.arange(-2.0, 2.2, step=0.5))
+            plt.yticks(np.arange(-2.0, 2.2, step=1.0))
             plt.ylim(-2.2, 2.2)
-            plt.text(k_max - 20, 1.5, 'T = {}'.format(n),
+            plt.text(k_max - 20, -4.5, 'T = {}'.format(n),
+            horizontalalignment='center',
+            verticalalignment='center'),
+            plt.text(k_max - 20, 0.75, '$\epsilon_r$ = {}'.format(eps_r),
+            horizontalalignment='center',
+            verticalalignment='center'),
+            plt.text(k_max - 20, -0.75, '$\sigma$ = {}'.format(sigma),
             horizontalalignment='center',
             verticalalignment='center')
             plt.tight_layout()
