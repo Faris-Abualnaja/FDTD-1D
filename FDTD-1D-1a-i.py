@@ -40,7 +40,7 @@ metadata    = dict(title='Gifs/FDTD-1D Simulation', artist='Faris-Abualnaja')
 writer      = PillowWriter(fps=15, metadata=metadata)
 
 # Simulation and animation creation loop
-with writer.saving(fig, 'Gifs/FDTD-1D-1a-i-TEST.gif', 100):
+with writer.saving(fig, 'Gifs/FDTD-1D-1a-i.gif', 100):
     # Time loop
     for n in range(n_max):
 

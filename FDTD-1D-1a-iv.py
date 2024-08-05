@@ -46,11 +46,11 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1a-iv.gif', 100):
 
         # Update electric field
         for k in range(1, k_max):
-            Ex[k] = Ex[k] + 0.5*(Hz[k-1] - Hz[k])
+            Ex[k] = Ex[k] + 0.5*(Hz[k] - Hz[k-1])
 
         # Update magnetic field
         for k in range(k_max-1):
-            Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
+            Hz[k] = Hz[k] + 0.5*(Ex[k+1] - Ex[k])
         
         # Magnetic field sources
         pulse = Source_Function(n)

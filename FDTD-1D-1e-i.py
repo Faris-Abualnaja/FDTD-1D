@@ -1,6 +1,6 @@
 # FDTD-1D with single E-field source
 # Adding a material with a different dielectric constant
-# Changed the source to apure sine wave
+# Changed the source to a pure sine wave
 # Faris Abualnaja
 # 2024-08-03
 
@@ -70,7 +70,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1e-i.gif', 100):
     for n in range(n_max):
         # Update electric field
         for k in range(1, k_max):
-            Ex[k] = Ex[k] + c[k]*(Hz[k-1] - Hz[k])
+            Ex[k] = Ex[k] + c[k]*(Hz[k] - Hz[k-1])
 
         # Electric field soft-source
         pulse           = Source_Function(n)
@@ -87,7 +87,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1e-i.gif', 100):
         
         # Update magnetic field
         for k in range(k_max-1):
-            Hz[k] = Hz[k] + 0.5*(Ex[k] - Ex[k+1])
+            Hz[k] = Hz[k] + 0.5*(Ex[k+1] - Ex[k])
 
         # Plotting
         if n % 5 == 0: # Frame rate
