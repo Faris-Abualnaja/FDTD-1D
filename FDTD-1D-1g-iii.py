@@ -20,7 +20,7 @@ k_source = 5   # Location of source in space (at the 5th cell)
 mu_0    = 1.25663706e-6         # Permeability of free space (magnetic constant)
 eps_0   = 8.85418782e-12        # Permitivitty of free space (electric constant)
 c_0     = 1/np.sqrt(mu_0*eps_0) # Speed of light in a vacuum (2.99792458e8)
-eps_r   = 4                     # Relative permittivity
+eps_r   = 1                     # Relative permittivity for metal = 1
 sigma   = 1e6                   # Very large since it is a metal
 
 # Spatial and temporal step sizes
@@ -128,7 +128,7 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1g-iii.gif', 100):
             plt.text(k_max - 20, 0.75, '$\epsilon_r$ = {}'.format(eps_r),
             horizontalalignment='center',
             verticalalignment='center'),
-            plt.text(k_max - 20, -0.75, '$\sigma$ = {}'.format(sigma),
+            plt.text(k_max - 20, -0.75, '$\sigma$ = {:.2E}'.format(sigma),
             horizontalalignment='center',
             verticalalignment='center')
             plt.tight_layout()
