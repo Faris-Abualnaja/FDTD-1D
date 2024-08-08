@@ -38,3 +38,4 @@ Each file contains a modified version of the 1D FDTD code. Here is a list of wha
     - FDTD-1D-1g-i: Creating a lossy dielectric medium
     - FDTD-1D-1g-ii: Changing material width to observe absorption behaviour
     - FDTD-1D-1g-iii: Simulating EM-wave hitting a metallic wall, which has a very high conductivity, $\sigma = 1e6$. The relative permittivity for metals is $\epsilon_r = 1$
+    - FDTD-1D-1g-iv: Simulating EM-wave hitting a metallic wall without considering update factors, i.e., dielectric parameters. At the interface (air:metal) we set the E-field to zero, forcing immediate attenuation into the material.
