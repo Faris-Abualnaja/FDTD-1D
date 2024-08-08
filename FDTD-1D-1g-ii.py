@@ -15,7 +15,7 @@ from matplotlib.animation import PillowWriter
 
 # Size of simulation domain in space and time
 k_max    = 200 # 200 cells
-n_max    = 1600 # 800 time stamps
+n_max    = 800 # 800 time stamps
 k_source = 5   # Location of source in space (at the 5th cell)
 
 # Constants
@@ -32,7 +32,8 @@ dy          = lambda_min/10             # Step size/cell size in space (y-direct
 dt          = dy/(2*c_0)                # Step size in time
 
 # Dielectric constant accross material spatial-domain
-eps_material    = np.zeros(20)
+length = 50
+eps_material    = np.zeros(length)
 eps_material[:] = eps_r
 
 # Constants in update equation
@@ -40,17 +41,17 @@ eaf = (dt*sigma)/(2*eps_r*eps_0)
 # Outside material
 ca = np.ones(k_max)
 # Inside material
-ca[int(k_max/2):int(k_max/2)+20] = (1-eaf)/(1+eaf)
+ca[int(k_max/2):int(k_max/2)+length] = (1-eaf)/(1+eaf)
 
 cb = np.ones(k_max)
 # Outside material
 cb[:] = 0.5
 # Inside material
-cb[int(k_max/2):20] = (1/(2*eps_r*(1+eaf)))
+cb[int(k_max/2):int(k_max/2)+length] = (1/(2*eps_r*(1+eaf)))
 
 # Material across domain: air + some material
 material = np.zeros(k_max)
-material[int(k_max/2):int(k_max/2)+25] = 1.5
+material[int(k_max/2):int(k_max/2)+length] = 1.5
 material = material*2 - 1.5
 
 # Define our electric and magnetic fields (wave propagates in y-direction)

@@ -24,14 +24,14 @@ eps_r   = 1                     # Relative permittivity for metal = 1
 sigma   = 1e6                   # Very large since it is a metal
 
 # Spatial and temporal step sizes
-lambda_     = 550e-9
-freq        = 250e6 # (c_0/np.sqrt(eps_r))/lambda_#
+freq        = 250e6
 lambda_min  = (c_0/np.sqrt(eps_r))/freq
 dy          = lambda_min/10             # Step size/cell size in space (y-direction)
 dt          = dy/(2*c_0)                # Step size in time
 
 # Dielectric constant accross material spatial-domain
-eps_material    = np.zeros(int(k_max/2))
+length = 50
+eps_material    = np.zeros(length)
 eps_material[:] = eps_r
 
 # Constants in update equation
@@ -39,17 +39,17 @@ eaf = (dt*sigma)/(2*eps_r*eps_0)
 # Outside material
 ca = np.ones(k_max)
 # Inside material
-ca[int(k_max/2):int(k_max/2)+20] = (1-eaf)/(1+eaf)
+ca[int(k_max/2):int(k_max/2)+length] = (1-eaf)/(1+eaf)
 
 cb = np.ones(k_max)
 # Outside material
 cb[:] = 0.5
 # Inside material
-cb[int(k_max/2):20] = (1/(2*eps_r*(1+eaf)))
+cb[int(k_max/2):int(k_max/2)+length] = (0.5/(eps_r*(1+eaf)))
 
 # Material across domain: air + some material
 material = np.zeros(k_max)
-material[int(k_max/2):int(k_max/2)+25] = 1.5
+material[int(k_max/2):int(k_max/2)+length] = 1.5
 material = material*2 - 1.5
 
 # Define our electric and magnetic fields (wave propagates in y-direction)
@@ -60,9 +60,6 @@ Hz = np.zeros(k_max) # Magnetic field propagating in the z-direction
 # Domain boundaries
 Lower_Boundary = np.zeros(n_max) # Electric field propagating in the x-direction
 Upper_Boundary = np.zeros(n_max) # Magnetic field propagating in the z-direction
-# Material boundaries
-Material_Lower_Boundary = np.zeros(n_max)
-Material_Upper_Boundary = np.zeros(n_max)
 
 # Electric and magnetic field source
 def Source_Function(t, freq):
@@ -94,10 +91,6 @@ with writer.saving(fig, 'Gifs/FDTD-1D-1g-iii.gif', 100):
         # Boundary conditions
         Lower_Boundary[n] = Ex[1]
         Upper_Boundary[n] = Ex[k_max-2]
-
-        # Material boundary conditions
-        Material_Lower_Boundary[n] = Ex[int(k_max/2)]
-        Material_Upper_Boundary[n] = Ex[int(k_max/2) + 20]
 
         # Boundaries at beginning and end of domain
         if n > 1:
