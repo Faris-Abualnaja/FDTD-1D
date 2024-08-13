@@ -12,7 +12,7 @@ from matplotlib.animation import PillowWriter
 
 # Size of simulation domain in space and time
 k_max    = 200 # 200 cells
-n_max    = 1600 # 800 time stamps
+n_max    = 800 # 800 time stamps
 k_source = 5   # Location of source in space (at the 5th cell)
 
 # Constants
@@ -23,10 +23,11 @@ eps_r   = 4                     # Relative permittivity
 sigma   = 0.04
 
 # Spatial and temporal step sizes
-freq        = 700e6
-lambda_min  = (c_0/np.sqrt(eps_r))/freq
-dy          = lambda_min/10             # Step size/cell size in space (y-direction)
-dt          = dy/(2*c_0)                # Step size in time
+freq       = 700e6
+lambda_min = (c_0/np.sqrt(eps_r))/freq
+# Step size/cell size in space (y-direction) 
+dy = 0.01       # technically should be calculated with lambda_min/10
+dt = dy/(2*c_0) # Step size in time
 
 # Dielectric constant accross material spatial-domain
 eps_material    = np.zeros(int(k_max/2))
